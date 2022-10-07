@@ -4,16 +4,21 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var locationlifecycleobserver: LocationLifecycleObserver
+    val viewModel: LocationViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestPermissions()
+        locationlifecycleobserver = LocationLifecycleObserver(this, viewModel)
 
         // You need to create the lifecycle observer and add it to the lifecycle
     }
@@ -23,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
         } else {
             // Set "gpsPermission" to true in the lifecycle observer
+            locationlifecycleobserver.gpsPermission = true
         }
     }
 
